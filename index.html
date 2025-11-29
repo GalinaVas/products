@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мои разработки – материалы по английскому</title>
+
+  <!-- Основные стили страницы -->
+  <style>
+    /* === БАЗОВЫЕ СТИЛИ И ФОН === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      min-height: 100vh;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* === КОНТЕЙНЕР === */
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* === ШАПКА САЙТА === */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      gap: 16px;
+    }
+
+    .logo-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .logo-title h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .logo-title span {
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    /* === БЛОК-ИНФО О ВИТРИНЕ === */
+    .intro {
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .intro-main-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .intro-subtitle {
+      font-size: 0.98rem;
+      color: #9ca3af;
+      max-width: 520px;
+    }
+
+    /* === СЕТКА КАРТОЧЕК ТОВАРОВ === */
+    .products-section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .products-section-title h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .products-section-title span {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .product-card {
+      position: relative;
+      background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.96));
+      border-radius: 18px;
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px) translateZ(0);
+      box-shadow: 0 22px 70px rgba(15, 23, 42, 0.95);
+      border-color: rgba(59, 130, 246, 0.7);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .product-thumb {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #020617;
+    }
+
+    .product-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      min-height: 40px;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      gap: 8px;
+    }
+
+    .product-price {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #facc15;
+    }
+
+    .product-buy-btn {
+      border-radius: 999px;
+      padding: 6px 14px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .product-buy-btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+    }
+
+    .product-buy-btn span {
+      font-size: 1rem;
+    }
+
+    /* === МОДАЛЬНОЕ ОКНО ДЛЯ ПОДРОБНОСТЕЙ ТОВАРА === */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-dialog {
+      max-width: 800px;
+      width: 100%;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), rgba(15, 23, 42, 0.98));
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      box-shadow: 0 30px 120px rgba(0, 0, 0, 0.95);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: 18px;
+      position: relative;
+      max-height: 90vh;
+      overflow: hidden;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #9ca3af;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(15, 23, 42, 1);
+      transform: scale(1.03);
+    }
+
+    .modal-carousel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .modal-carousel-main {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #020617;
+      aspect-ratio: 4 / 3;
+      position: relative;
+    }
+
+    .modal-carousel-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-carousel-controls {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline: 6px;
+      pointer-events: none;
+    }
+
+    .carousel-arrow {
+      pointer-events: auto;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.8);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #e5e7eb;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .carousel-arrow:hover {
+      background: rgba(15, 23, 42, 1);
+      transform: scale(1.03);
+    }
+
+    .modal-carousel-thumbs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .modal-carousel-thumb {
+      width: 70px;
+      height: 52px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      cursor: pointer;
+      flex: 0 0 auto;
+      opacity: 0.7;
+      transition: border-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    .modal-carousel-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-carousel-thumb.active {
+      border-color: #3b82f6;
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .modal-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 100%;
+    }
+
+    .modal-product-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .modal-product-short {
+      font-size: 0.9rem;
+      color: #9ca3af;
+    }
+
+    .modal-product-description {
+      font-size: 0.9rem;
+      color: #d1d5db;
+      margin-top: 4px;
+      padding-right: 4px;
+      overflow-y: auto;
+    }
+
+    .modal-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #facc15;
+      margin-top: 4px;
+    }
+
+    .modal-actions {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .modal-buy-btn {
+      border-radius: 999px;
+      padding: 9px 18px;
+      border: none;
+      background: linear-gradient(135deg, #3b82f6, #22c55e);
+      color: white;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    }
+
+    .modal-buy-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 60px rgba(59, 130, 246, 0.6);
+      filter: brightness(1.03);
+    }
+
+    .modal-small-note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* === ФУТЕР === */
+    footer {
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 14px 16px 20px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    /* === АДАПТИВ === */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .modal-dialog {
+        grid-template-columns: minmax(0, 1fr);
+        max-height: 92vh;
+      }
+
+      .modal-product-description {
+        max-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- === ШАПКА САЙТА === -->
+    <header>
+      <div class="logo-title">
+        <h1>Мои разработки</h1>
+        <span>Витрина моих авторских материалов по английскому языку</span>
+      </div>
+    </header>
+
+    <!-- === ВСТУПИТЕЛЬНЫЙ БЛОК === -->
+    <section class="intro">
+      <div>
+        <h2 class="intro-main-title">Готовые материалы по английскому для уроков и самообучения.</h2>
+        <p class="intro-subtitle">
+          Здесь собраны мои авторские разработки для уроков английского: квесты, комиксы и рабочие листы.
+          Выберите материал, откройте карточку с описанием и купите в пару кликов.
+        </p>
+      </div>
+    </section>
+
+    <!-- === СЕКЦИЯ ТОВАРОВ === -->
+    <section>
+      <div class="products-section-title">
+        <h2>Разработки по английскому</h2>
+        <span id="products-count">Всего разработок: 3</span>
+      </div>
+
+      <div class="products-grid" id="products-grid"></div>
+    </section>
+  </div>
+
+  <!-- === МОДАЛЬНОЕ ОКНО (одна штука, наполняется динамически) === -->
+  <div class="modal-backdrop" id="product-modal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="Закрыть">
+        ×
+      </button>
+
+      <!-- Левая колонка – карусель -->
+      <div class="modal-carousel">
+        <div class="modal-carousel-main">
+          <img src="" alt="Предпросмотр разработки" id="modal-main-image" />
+          <div class="modal-carousel-controls">
+            <button class="carousel-arrow" type="button" id="carousel-prev">‹</button>
+            <button class="carousel-arrow" type="button" id="carousel-next">›</button>
+          </div>
+        </div>
+        <div class="modal-carousel-thumbs" id="modal-thumbs"></div>
+      </div>
+
+      <!-- Правая колонка – детали разработки -->
+      <div class="modal-details">
+        <div>
+          <h3 class="modal-product-title" id="modal-title">Название разработки</h3>
+          <p class="modal-product-short" id="modal-short">Краткое описание</p>
+        </div>
+
+        <div class="modal-product-description" id="modal-description">
+          Подробное описание разработки.
+        </div>
+
+        <div class="modal-price" id="modal-price">0 ₽</div>
+
+        <div class="modal-actions">
+          <button class="modal-buy-btn" id="modal-buy-btn" type="button">
+            <span>Купить</span>
+          </button>
+          <div class="modal-small-note">
+            Ссылки на оплату пока не подключены. Вы можете добавить их в JS‑код шаблона.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === ФУТЕР === -->
+  <footer>
+    © <span id="year"></span> Мои разработки — все права защищены.<br />
+    Мой Telegram-канал: <a href="https://t.me/North_english_teacher" target="_blank">@North_english_teacher</a>
+  </footer>
+
+  <!-- === JAVASCRIPT === -->
+  <script>
+    // ===================
+    // НАСТРОЙКИ РАЗРАБОТОК
+    // ===================
+    const productsData = [
+      {
+        id: "magic-quest",
+        title: "Мини‑квест: две девушки и волшебный мир",
+        tagLine: "Приключение для отработки Present Simple и Present Continuous.",
+        shortDescription:
+          "Сюжетный мини‑квест, где ученики помогают двум героиням спасти наш мир, используя Present Simple и Present Continuous.",
+        fullDescription:
+          "Приключенческий мини‑квест про двух девушек, которые случайно попадают в волшебный мир и пытаются спасти настоящий. Ученики выполняют задания, читают фрагменты истории, делают выборы от лица героинь и тренируют Present Simple и Present Continuous в естественном контексте. Подходит для уроков и внеурочной работы, можно проходить по частям.",
+        price: "790 ₽",
+        images: [
+          "https://via.placeholder.com/800x600?text=Magic+Quest",
+          "https://via.placeholder.com/800x600?text=Present+Simple+%26+Continuous"
+        ],
+        badge: "Квест",
+        buyLink: "#magic-quest-checkout" // TODO: замените на реальный URL
+      },
+      {
+        id: "funny-moth-comic",
+        title: "Мини‑комикс про дружелюбную моль",
+        tagLine: "6 забавных эпизодов для чтения и обсуждения.",
+        shortDescription:
+          "Обучающий мини‑комикс о дружелюбной моли, которая попадает в смешные ситуации и помогает запоминать лексику.",
+        fullDescription:
+          "Набор из 6 связанных эпизодов про дружелюбную моль, которая постоянно оказывается в забавных и очень человечных ситуациях. У каждого фрагмента есть задания на понимание текста, лексику и говорение. Материал отлично подходит для разогрева на уроке, домашних заданий и работы в парах.",
+        price: "590 ₽",
+        images: [
+          "https://via.placeholder.com/800x600?text=Funny+Moth+Comic",
+          "https://via.placeholder.com/800x600?text=English+Through+Stories"
+        ],
+        badge: "Комикс",
+        buyLink: "#funny-moth-comic-checkout" // TODO: замените на реальный URL
+      },
+      {
+        id: "surface-pressure-worksheet",
+        title: "Worksheet по песне Surface Pressure (Encanto)",
+        tagLine: "Песня, лексика и разговор о внутреннем давлении.",
+        shortDescription:
+          "Рабочий лист по песне Surface Pressure: задания на аудирование, лексику и дискуссию о стрессе и ответственности.",
+        fullDescription:
+          "Авторский worksheet по песне Surface Pressure из мультфильма Encanto. Внутри — упражнения на аудирование с пропусками, работа с ключевой лексикой, вопросы для обсуждения темы давления и ожиданий, а также идеи для follow‑up заданий. Подходит для подростков и взрослых; отлично оживляет урок и делает практику английского эмоционально вовлекающей.",
+        price: "490 ₽",
+        images: [
+          "https://via.placeholder.com/800x600?text=Surface+Pressure+Worksheet",
+          "https://via.placeholder.com/800x600?text=Song+Activity"
+        ],
+        badge: "Worksheet",
+        buyLink: "#surface-pressure-checkout" // TODO: замените на реальный URL
+      }
+    ];
+
+    // Глобальные переменные
+    let currentProduct = null;
+    let currentImageIndex = 0;
+
+    const productsGrid = document.getElementById("products-grid");
+    const productsCount = document.getElementById("products-count");
+
+    const modalBackdrop = document.getElementById("product-modal");
+    const modalMainImage = document.getElementById("modal-main-image");
+    const modalThumbs = document.getElementById("modal-thumbs");
+    const modalTitle = document.getElementById("modal-title");
+    const modalShort = document.getElementById("modal-short");
+    const modalDescription = document.getElementById("modal-description");
+    const modalPrice = document.getElementById("modal-price");
+    const modalBuyBtn = document.getElementById("modal-buy-btn");
+
+    const modalCloseBtn = document.getElementById("modal-close-btn");
+    const carouselPrev = document.getElementById("carousel-prev");
+    const carouselNext = document.getElementById("carousel-next");
+
+    // Рендер карточек
+    function renderProductCards() {
+      productsGrid.innerHTML = "";
+
+      productsData.forEach((product) => {
+        const card = document.createElement("article");
+        card.className = "product-card";
+        card.setAttribute("data-product-id", product.id);
+
+        card.innerHTML = `
+          ${product.badge ? `<div class="product-badge">${product.badge}</div>` : ""}
+          <div class="product-thumb">
+            <img src="${product.images[0]}" alt="${product.title} preview" loading="lazy" />
+          </div>
+          <h3 class="product-title">${product.title}</h3>
+          <p class="product-desc">${product.shortDescription}</p>
+          <div class="product-meta">
+            <div class="product-price">${product.price}</div>
+            <button class="product-buy-btn" type="button">
+              <span>Купить</span>
+              <span>→</span>
+            </button>
+          </div>
+        `;
+
+        card.addEventListener("click", (event) => {
+          if (
+            event.target.closest(".product-buy-btn") ||
+            event.target.classList.contains("product-card")
+          ) {
+            openProductModal(product.id);
+          }
+        });
+
+        productsGrid.appendChild(card);
+      });
+
+      productsCount.textContent = `Всего разработок: ${productsData.length}`;
+    }
+
+    // Открытие модального окна
+    function openProductModal(productId) {
+      const product = productsData.find((p) => p.id === productId);
+      if (!product) return;
+
+      currentProduct = product;
+      currentImageIndex = 0;
+
+      modalTitle.textContent = product.title;
+      modalShort.textContent = product.tagLine || "";
+      modalDescription.textContent = product.fullDescription;
+      modalPrice.textContent = product.price;
+
+      modalBuyBtn.onclick = () => {
+        if (product.buyLink && product.buyLink !== "#") {
+          window.open(product.buyLink, "_blank");
+        } else {
+          alert("Ссылка на оплату пока не настроена.");
+        }
+      };
+
+      renderModalCarousel();
+
+      modalBackdrop.classList.add("active");
+      modalBackdrop.setAttribute("aria-hidden", "false");
+    }
+
+    // Рендер карусели
+    function renderModalCarousel() {
+      if (!currentProduct) return;
+
+      const images = currentProduct.images || [];
+      if (!images.length) return;
+
+      modalMainImage.src = images[currentImageIndex];
+      modalMainImage.alt = `${currentProduct.title} image ${currentImageIndex + 1}`;
+
+      modalThumbs.innerHTML = "";
+
+      images.forEach((src, index) => {
+        const thumb = document.createElement("button");
+        thumb.type = "button";
+        thumb.className =
+          "modal-carousel-thumb" + (index === currentImageIndex ? " active" : "");
+
+        thumb.innerHTML = `<img src="${src}" alt="${currentProduct.title} preview ${index + 1}" />`;
+
+        thumb.addEventListener("click", () => {
+          currentImageIndex = index;
+          renderModalCarousel();
+        });
+
+        modalThumbs.appendChild(thumb);
+      });
+    }
+
+    // Кнопки карусели
+    carouselPrev.addEventListener("click", () => {
+      if (!currentProduct) return;
+      const total = currentProduct.images.length;
+      currentImageIndex = (currentImageIndex - 1 + total) % total;
+      renderModalCarousel();
+    });
+
+    carouselNext.addEventListener("click", () => {
+      if (!currentProduct) return;
+      const total = currentProduct.images.length;
+      currentImageIndex = (currentImageIndex + 1) % total;
+      renderModalCarousel();
+    });
+
+    // Закрытие модалки
+    function closeModal() {
+      modalBackdrop.classList.remove("active");
+      modalBackdrop.setAttribute("aria-hidden", "true");
+      currentProduct = null;
+    }
+
+    modalCloseBtn.addEventListener("click", closeModal);
+
+    modalBackdrop.addEventListener("click", (event) => {
+      if (event.target === modalBackdrop) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modalBackdrop.classList.contains("active")) {
+        closeModal();
+      }
+    });
+
+    // Инициализация страницы
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProductCards();
+
+      const yearSpan = document.getElementById("year");
+      yearSpan.textContent = new Date().getFullYear();
+    });
+  </script>
+</body>
+</html>
